@@ -1,0 +1,225 @@
+@mixin strong {
+  font-size: 48px;
+  line-height: 57px;
+
+  font-weight: var(--font-weight-medium);
+
+  color: var(--color-black-1);
+}
+
+@mixin inline-animation($duration, $count, $timingFunction) {
+  $name: inline-#{unique-id()};
+
+  @keyframes #{$name} {
+    @content;
+  }
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: $count;
+  animation-timing-function: $timingFunction;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr;
+  column-gap: 24px;
+
+  // absolute bg
+  position: relative;
+
+  // sticky nav
+  height: 100dvh;
+  overflow-y: auto;
+
+  span {
+    display: inline-block;
+    font-family: var(--font-family-pretend);
+    font-weight: var(--font-weight-regular);
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.005em;
+
+    color: var(--color-gray-light-1);
+
+    &.strong {
+      @include strong;
+    }
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      &::before {
+        content: "-";
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .greetings {
+    grid-column: 2 / 12;
+
+    margin-top: 152px;
+  }
+
+  .verticalLine {
+    grid-column: 2 / 3;
+    border-left: 1px solid var(--color-black-1);
+    width: 0px;
+  }
+
+  .navigation {
+    grid-column: 2 / 4;
+    position: sticky;
+    padding: 28px 0;
+    height: fit-content;
+    top: 0;
+
+    .navItem {
+      font-family: var(--font-family-pretend);
+      font-weight: var(--font-weight-regular);
+      font-size: 24px;
+      line-height: 29px;
+      letter-spacing: -0.005em;
+
+      color: var(--color-gray-light-1);
+
+      &.active {
+        font-size: 38px;
+        line-height: 45px;
+
+        text-decoration: underline;
+        color: var(--color-black-1);
+      }
+    }
+  }
+
+  .contentWrapper {
+    margin-top: 413px;
+    grid-column: 4 / 12;
+
+    div.portfolioItem {
+      padding: 0 24px;
+      border-right: 1px solid var(--color-black-1);
+      margin-bottom: 150px;
+
+      .title {
+        @include strong;
+      }
+
+      .contents {
+        font-family: var(--font-family-pretend);
+        font-weight: var(--font-weight-regular);
+        font-size: 18px;
+        line-height: 180%;
+        letter-spacing: -0.005em;
+
+        color: var(--color-gray-light-2);
+
+        .subTitle {
+          font-family: var(--font-family-pretend);
+          font-weight: var(--font-weight-regular);
+          font-size: 32px;
+          line-height: 180%;
+          letter-spacing: -0.005em;
+
+          color: var(--color-black-1);
+          width: 120px;
+          margin-right: 24px;
+          margin-bottom: 10px;
+
+          &.fullWidth {
+            width: 100%;
+          }
+        }
+
+        .subContent {
+          font-family: inherit;
+          font-weight: inherit;
+          font-size: inherit;
+          line-height: inherit;
+          letter-spacing: inherit;
+
+          color: inherit;
+        }
+
+        .skillIcons {
+          .iconContainer {
+            overflow: hidden;
+            position: relative;
+            height: 64px;
+            width: 100%;
+
+            .image {
+              $image-width: 1568px;
+
+              position: absolute;
+              left: 0%;
+              top: 0%;
+              width: $image-width;
+              height: inherit;
+              background: url("/skill_icons.png") no-repeat;
+
+              &.first {
+                @include inline-animation(20s, infinite, linear) {
+                  from {
+                    left: 0%;
+                  }
+                  to {
+                    left: -$image-width;
+                  }
+                }
+              }
+
+              &.second {
+                @include inline-animation(20s, infinite, linear) {
+                  from {
+                    left: $image-width;
+                  }
+                  to {
+                    left: 0%;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .contentCard {
+          background-color: var(--color-gray-light-10);
+          border-radius: 10px;
+          padding: 20px;
+        }
+      }
+    }
+  }
+
+  .bg {
+    background-image: url("/bg_1.png");
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: cover;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56.25vw; // 이미지 비율에 맞춤
+    min-height: 800px;
+    z-index: -1;
+  }
+}
+
+// .pulse {
+//   @include inline-animation(2s) {
+//     from {
+//       background-color: yellow;
+//     }
+//     to {
+//       background-color: red;
+//     }
+//   }
+// }

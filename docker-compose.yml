@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    image: node:18.17.0
+    container_name: app
+    working_dir: /usr/src/app
+    environment:
+      # 2024.01.24 윈도우에서 Hot reloading 사용을 위한 설정
+      - WATCHPACK_POLLING=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    command: sh -c "npm install && npm run dev"

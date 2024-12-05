@@ -1,0 +1,10 @@
+$header-height: 80px;
+
+.rootContainer {
+  .headerSection {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: $header-height;
+  }
+}

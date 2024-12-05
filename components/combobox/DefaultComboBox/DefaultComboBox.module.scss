@@ -1,0 +1,95 @@
+.container {
+  width: fit-content;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+
+  &.open {
+    ul.comboItems {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  ul.comboItems {
+    visibility: hidden;
+    opacity: 0;
+
+    list-style: none;
+
+    z-index: 999;
+    position: absolute;
+    left: 0;
+
+    padding: 10px 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 5px 5px -3px;
+    margin-top: 15px;
+
+    max-height: 50dvh;
+    overflow-y: auto;
+
+    &.noItem {
+      li.comboItem {
+        color: var(--color-gray-light-1);
+        cursor: default;
+
+        &:hover {
+          background-color: initial;
+        }
+      }
+    }
+  }
+
+  li.comboItem {
+    font-size: 16px;
+    padding: 10px;
+    max-width: 80dvw;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: var(--color-gray-light-2);
+    }
+
+    &.active {
+      background-color: var(--color-black-1);
+      color: white;
+    }
+  }
+
+  .title {
+    $arrow-ml: 10px;
+    $arrow-width: 20px;
+
+    position: relative;
+    padding-right: calc($arrow-ml + $arrow-width);
+
+    .titleContent {
+      font-size: 16px;
+      overflow: hidden;
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      width: calc(100% + $arrow-ml + $arrow-width);
+    }
+
+    .titleArrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+
+      .arrowIcon {
+        vertical-align: middle;
+        margin-left: $arrow-ml;
+        width: $arrow-width;
+        height: $arrow-width;
+      }
+    }
+  }
+}
