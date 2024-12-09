@@ -1,17 +1,40 @@
 import { className } from "@/util/functions";
 import styles from "./Portfolio.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const SECTION = [
+  { id: "INTRODUCE", name: "INTRODUCE" },
+  { id: "SKILL", name: "SKILL" },
+  { id: "EXPERIENCE", name: "EXPERIENCE" },
+  { id: "EDUCATION", name: "EDUCATION" },
+  { id: "LICENSE", name: "LICENSE" },
+];
 
 export default function Portfolio() {
   const [selectedHash, setSelectedHash] = useState<string>();
+  const [showFixedNavButton, setShowFixedNavButton] = useState<boolean>(false);
+  const [showFixedNavMenu, setShowFixedNavMenu] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const container = containerRef.current;
+
     const handleHashChange = () => {
       setSelectedHash(window.location.hash.split("#")[1] || undefined);
     };
 
+    const handleScroll = () => {
+      if (container && contentWrapperRef.current) {
+        setShowFixedNavButton(
+          container.scrollTop > contentWrapperRef.current.offsetTop - 200
+        );
+      }
+    };
+
     // hashchange 이벤트 리스너 등록
     window.addEventListener("hashchange", handleHashChange);
+    container?.addEventListener("scroll", handleScroll);
 
     // 초기 해시 설정
     handleHashChange();
@@ -19,11 +42,12 @@ export default function Portfolio() {
     // 컴포넌트 언마운트 시 리스너 제거
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
+      container?.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <div className={className(styles.greetings, "mb-28")}>
         <span style={{ marginBottom: 8 }}>안녕하세요, 풀스택 개발자</span>
         <br />
@@ -35,54 +59,61 @@ export default function Portfolio() {
 
       <div className={styles.verticalLine} style={{ height: 350 }}></div>
 
+      {/* only mobile */}
+      {showFixedNavButton && (
+        <div className={styles.fixedNav}>
+          {showFixedNavMenu ? (
+            <div className={styles.fixedNavMenu}>
+              {SECTION.map((item, idx) => {
+                return (
+                  <div
+                    key={item.id}
+                    className={className(
+                      styles.navItem,
+                      idx < SECTION.length - 1 ? "mb-28" : "",
+                      selectedHash === item.id ? styles.active : ""
+                    )}
+                  >
+                    <a href={`#${item.id}`}>{item.name}</a>
+                  </div>
+                );
+              })}
+              <div
+                className={styles.closeButton}
+                onClick={() => setShowFixedNavMenu(false)}
+              />
+            </div>
+          ) : (
+            <div
+              className={styles.fixedNavButton}
+              onClick={() => setShowFixedNavMenu(true)}
+            >
+              <div className={styles.bar} />
+              <div className={styles.bar} />
+              <div className={styles.bar} />
+            </div>
+          )}
+        </div>
+      )}
+
       <div className={styles.navigation}>
-        <div
-          className={className(
-            styles.navItem,
-            "mb-28",
-            selectedHash === "INTRODUCE" ? styles.active : ""
-          )}
-        >
-          <a href="#INTRODUCE">INTRODUCE</a>
-        </div>
-        <div
-          className={className(
-            styles.navItem,
-            "mb-28",
-            selectedHash === "SKILL" ? styles.active : ""
-          )}
-        >
-          <a href="#SKILL">SKILL</a>
-        </div>
-        <div
-          className={className(
-            styles.navItem,
-            "mb-28",
-            selectedHash === "EXPERIENCE" ? styles.active : ""
-          )}
-        >
-          <a href="#EXPERIENCE">EXPERIENCE</a>
-        </div>
-        <div
-          className={className(
-            styles.navItem,
-            "mb-28",
-            selectedHash === "EDUCATION" ? styles.active : ""
-          )}
-        >
-          <a href="#EDUCATION">EDUCATION</a>
-        </div>
-        <div
-          className={className(
-            styles.navItem,
-            selectedHash === "LICENSE" ? styles.active : ""
-          )}
-        >
-          <a href="#LICENSE">LICENSE</a>
-        </div>
+        {SECTION.map((item, idx) => {
+          return (
+            <div
+              key={item.id}
+              className={className(
+                styles.navItem,
+                idx < SECTION.length - 1 ? "mb-28" : "",
+                selectedHash === item.id ? styles.active : ""
+              )}
+            >
+              <a href={`#${item.id}`}>{item.name}</a>
+            </div>
+          );
+        })}
       </div>
 
-      <div className={styles.contentWrapper}>
+      <div className={styles.contentWrapper} ref={contentWrapperRef}>
         <div className={styles.portfolioItem} id="INTRODUCE">
           <div className={className(styles.title, "mb-24")}>
             I N T R O D U C E
@@ -110,6 +141,14 @@ export default function Portfolio() {
             참여했습니다. 팀원들의 도움도 받아가며 C# 및 ASP.NET 생태계에 신속히
             적응했고, 점차 처음 경험하는 모바일 운영 및 개발까지 안정적으로
             수행할 수 있었습니다.
+            <br />
+            <br />
+            {/* 입사하게 된다면 어려운 문제에 도전하고 새로운 문제를 해결하는
+            적극적인 태도를 유지하겠습니다. 또한, 동료 들과의 소통을 통해
+            혼자서는 이루기 어려운 시너지를 만들어내고, 팀의 공동 목표를
+            최우선으로 두며 성실히 실 행해 나가겠습니다. 더불어, 기술적 성장에
+            안주하지 않고 끊임없이 배우고 발전하며, 변화하는 환경에서도 지속
+            적으로 가치를 창출하는 개발자가 되고자 합니다. */}
           </div>
         </div>
 

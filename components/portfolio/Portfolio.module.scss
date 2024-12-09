@@ -97,6 +97,10 @@
     }
   }
 
+  .fixedNavButton {
+    display: none;
+  }
+
   .contentWrapper {
     margin-top: 413px;
     grid-column: 4 / 12;
@@ -198,28 +202,141 @@
   }
 
   .bg {
-    background-image: url("/bg_1.png");
+    background-image: url("/bg_2.jpg");
     background-repeat: no-repeat;
     background-position: top left;
     background-size: cover;
+    filter: opacity(0.5);
 
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 56.25vw; // 이미지 비율에 맞춤
-    min-height: 800px;
+    height: 100%;
     z-index: -1;
   }
 }
 
-// .pulse {
-//   @include inline-animation(2s) {
-//     from {
-//       background-color: yellow;
-//     }
-//     to {
-//       background-color: red;
-//     }
-//   }
-// }
+@media screen and (max-width: 1366px) {
+  .container {
+    .navigation {
+      position: static;
+    }
+
+    .fixedNav {
+      position: fixed;
+      bottom: 18px;
+      // center align
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9;
+
+      // 공통
+      > div {
+        /* From https://css.glass */
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+
+        border: 1px solid white;
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      div.fixedNavButton {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 18px;
+
+        div.bar {
+          height: 1px;
+          border-top: 2px solid var(--color-gray-light-2);
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      div.fixedNavMenu {
+        max-width: 400px;
+        width: fit-content;
+        padding: 18px;
+
+        .navItem {
+          font-family: var(--font-family-pretend);
+          font-weight: var(--font-weight-regular);
+          font-size: 18px;
+          line-height: 29px;
+          letter-spacing: -0.005em;
+
+          color: var(--color-gray-light-1);
+
+          &.active {
+            font-size: 24px;
+            line-height: 45px;
+
+            text-decoration: underline;
+            color: var(--color-black-1);
+          }
+        }
+
+        .closeButton {
+          position: relative;
+          margin-top: 10px;
+          width: 60px;
+          height: 60px;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 15px;
+
+          &:before,
+          &:after {
+            position: absolute;
+            content: " ";
+            height: 30px;
+            width: 2px;
+            background-color: var(--color-gray-light-2);
+          }
+
+          &:before {
+            left: 30px;
+            transform: rotate(45deg);
+          }
+          &:after {
+            left: 30px;
+            transform: rotate(-45deg);
+          }
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .contentWrapper {
+      grid-column: 1 /-1;
+
+      div.portfolioItem {
+        border-right: none;
+
+        .title {
+          font-size: 36px;
+        }
+
+        .contents {
+          .subTitle {
+            font-size: 24px;
+            font-weight: var(--font-weight-medium);
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+  }
+}
